@@ -6,6 +6,9 @@
 package nl.jochembroekhoff.mc_mts_installer;
 
 import java.io.InputStream;
+import javax.swing.JProgressBar;
+import javax.swing.JTextArea;
+import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
@@ -260,9 +263,40 @@ public class Main extends javax.swing.JFrame {
             InputStream settingsFile = getClass().getResourceAsStream("/settings.json");
             String settingsString = convertStreamToString(settingsFile);
             Object settingsObj = parser.parse(settingsString);
+            JSONObject settings = (JSONObject) settingsObj;
+            
+            if(!settings.containsKey("isDefaultFile") &&
+                    settings.containsKey("startExtention") &&
+                    settings.containsKey("type") &&
+                    settings.containsKey("version")) {
+                /*
+                Log information
+                */
+                log("-----------------");
+                log("Some information:");
+                log("Start file: start." + settings.get("startExtention"));
+                log("Server type: " + settings.get("type"));
+                log("Server version: " + settings.get("version"));
+                if(settings.containsKey("plugins")) {
+                    //TODO: List plugin IDs (+ name from CurseForge API)
+                    log("This server has some plugins: TODO :D");
+                }
+
+                /*
+                Download the start file
+                */
+                log("Downloading start file");
+            } else {
+                log("This installer is not set up yet. Go to "
+                        + "http://jochembroekhoff.nl/mc-mts to set up an installer.");
+                
+                /*
+                Finish (With actually an error) :D
+                */
+                done(true);
+            }
         } catch(ParseException e) {
-            jProgressBar1.setValue(0);
-            jButton1.setEnabled(true);
+            done(true);
             
             log("----------------------------------");
             log("-- Couldn't parse settings.json --");
@@ -302,16 +336,48 @@ public class Main extends javax.swing.JFrame {
         return s.hasNext() ? s.next() : "";
     }
     
-    private void appendTextToJTextArea(javax.swing.JTextArea textArea, String textToAppend) {
+    private JTextArea appendTextToJTextArea(JTextArea textArea, String textToAppend) {
         String currentText;
         
         currentText = textArea.getText();
         
         textArea.setText(currentText + textToAppend + "\n");
+        
+        return textArea;
     }
     
-    private void log(String message) {
-        appendTextToJTextArea(jTextArea1, message);
+    private JTextArea log(String message) {
+        return appendTextToJTextArea(jTextArea1, message);
+    }
+    
+    private void done(Boolean zeroPercent) {
+        if(zeroPercent) { //Is this an error?
+            jProgressBar1.setValue(0);
+            jButton1.setEnabled(true);
+        } else {
+            done();
+        }
+    }
+    
+    private void done() {
+        jProgressBar1.setValue(100);
+        jButton1.setEnabled(true);
+        
+        jDialog1.setVisible(true);
+    }
+    
+    private JProgressBar addProgress(JProgressBar jpb, Integer valueToAdd) {
+        Integer oval = jpb.getValue();
+        jpb.setValue(oval + valueToAdd);
+        
+        return jpb;
+    }
+    
+    private JProgressBar addProgress(Integer valueToAdd) {
+        Integer oval = jProgressBar1.getValue();
+        jProgressBar1.setValue(oval + valueToAdd);
+        
+        return jProgressBar1;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
