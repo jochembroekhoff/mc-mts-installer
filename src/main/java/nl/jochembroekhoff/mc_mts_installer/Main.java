@@ -5,8 +5,12 @@
  */
 package nl.jochembroekhoff.mc_mts_installer;
 
+import java.io.InputStream;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
 /**
- *
+ * Main class for the MC-MTS Installer
  * @author Jochem Broekhoff
  */
 public class Main extends javax.swing.JFrame {
@@ -45,6 +49,14 @@ public class Main extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
         jSeparator1 = new javax.swing.JSeparator();
+        jLabel10 = new javax.swing.JLabel();
+
+        jDialog1.setTitle("Installation Done");
+        jDialog1.setBounds(new java.awt.Rectangle(0, 0, 475, 195));
+        jDialog1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jDialog1.setIconImage(getIconImage());
+        jDialog1.setMinimumSize(new java.awt.Dimension(475, 195));
+        jDialog1.setModal(true);
 
         jLabel5.setFont(new java.awt.Font("Consolas", 1, 48)); // NOI18N
         jLabel5.setText("Installation Done");
@@ -119,13 +131,15 @@ public class Main extends javax.swing.JFrame {
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton2)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("MC-MTS Installer");
+        setBounds(new java.awt.Rectangle(0, 0, 488, 345));
+        setMinimumSize(new java.awt.Dimension(488, 250));
 
         jLabel1.setFont(new java.awt.Font("Consolas", 1, 48)); // NOI18N
         jLabel1.setText("MC-MTS Installer");
@@ -138,6 +152,11 @@ public class Main extends javax.swing.JFrame {
                 jButton1MouseClicked(evt);
             }
         });
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel3.setText("Progress");
@@ -148,7 +167,6 @@ public class Main extends javax.swing.JFrame {
         jTextArea1.setEditable(false);
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
-        jTextArea1.setText("asdf\nasd\nf\nasd\nf\nasd\nf\nasdf\n\nasd\nf\nasd\nf\nasdf\na\nsdf\na\nsd"); // NOI18N
         jTextArea1.setOpaque(false);
         jScrollPane1.setViewportView(jTextArea1);
 
@@ -156,13 +174,13 @@ public class Main extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jProgressBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jProgressBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 468, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
                     .addComponent(jLabel4))
                 .addGap(0, 0, Short.MAX_VALUE))
-            .addComponent(jScrollPane1)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 468, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -173,8 +191,11 @@ public class Main extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 114, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE))
         );
+
+        jLabel10.setForeground(new java.awt.Color(153, 153, 153));
+        jLabel10.setText("Version 1.0-SNAPSHOT");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -191,7 +212,8 @@ public class Main extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jLabel10)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton1)))
                 .addContainerGap())
         );
@@ -205,9 +227,11 @@ public class Main extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
-                .addComponent(jButton1)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton1)
+                    .addComponent(jLabel10))
                 .addContainerGap())
         );
 
@@ -215,31 +239,45 @@ public class Main extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
-        //DO EVERYTHING HERE :D
-        jDialog1.setVisible(true);
+        //UUH :/ Nothing!
     }//GEN-LAST:event_jButton1MouseClicked
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         jDialog1.setVisible(false);
-        //TODO: Close process
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        //Disable the "Start" button
+        jButton1.setEnabled(false);
+        
+        try {
+            JSONParser parser = new JSONParser();
+
+            log("Reading settings.json");
+            Integer prevValue = jProgressBar1.getValue();
+            jProgressBar1.setValue(prevValue + 10);
+            
+            InputStream settingsFile = getClass().getResourceAsStream("/settings.json");
+            String settingsString = convertStreamToString(settingsFile);
+            Object settingsObj = parser.parse(settingsString);
+        } catch(ParseException e) {
+            jProgressBar1.setValue(0);
+            jButton1.setEnabled(true);
+            
+            log("----------------------------------");
+            log("-- Couldn't parse settings.json --");
+            log("----------------------------------");
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
+        /* Set the SystemLookAndFeel look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
         try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
+            javax.swing.UIManager.setLookAndFeel(javax.swing.UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException ex) {
             java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
@@ -258,12 +296,30 @@ public class Main extends javax.swing.JFrame {
             }
         });
     }
+    
+    static String convertStreamToString(java.io.InputStream is) {
+        java.util.Scanner s = new java.util.Scanner(is).useDelimiter("\\A");
+        return s.hasNext() ? s.next() : "";
+    }
+    
+    private void appendTextToJTextArea(javax.swing.JTextArea textArea, String textToAppend) {
+        String currentText;
+        
+        currentText = textArea.getText();
+        
+        textArea.setText(currentText + textToAppend + "\n");
+    }
+    
+    private void log(String message) {
+        appendTextToJTextArea(jTextArea1, message);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JDialog jDialog1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
