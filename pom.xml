@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>nl.jochembroekhoff</groupId>
     <artifactId>MC_MTS_Installer</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0-BETA</version>
     <packaging>jar</packaging>
     <url>http://jochembroekhoff.nl</url>
     <name>MC-MTS Installer</name>

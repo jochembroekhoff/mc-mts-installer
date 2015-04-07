@@ -1,11 +1,18 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package nl.jochembroekhoff.mc_mts_installer;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
+import javax.swing.JFileChooser;
 import javax.swing.JProgressBar;
 import javax.swing.JTextArea;
 import org.json.simple.JSONObject;
@@ -42,6 +49,8 @@ public class Main extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
+        jDialog2 = new javax.swing.JDialog();
+        jFileChooser1 = new javax.swing.JFileChooser();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
@@ -60,6 +69,7 @@ public class Main extends javax.swing.JFrame {
         jDialog1.setIconImage(getIconImage());
         jDialog1.setMinimumSize(new java.awt.Dimension(475, 195));
         jDialog1.setModal(true);
+        jDialog1.setPreferredSize(new java.awt.Dimension(475, 195));
 
         jLabel5.setFont(new java.awt.Font("Consolas", 1, 48)); // NOI18N
         jLabel5.setText("Installation Done");
@@ -139,6 +149,21 @@ public class Main extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        jDialog2.setBounds(new java.awt.Rectangle(0, 0, 582, 397));
+        jDialog2.setMinimumSize(new java.awt.Dimension(582, 397));
+        jDialog2.setName("Open"); // NOI18N
+
+        javax.swing.GroupLayout jDialog2Layout = new javax.swing.GroupLayout(jDialog2.getContentPane());
+        jDialog2.getContentPane().setLayout(jDialog2Layout);
+        jDialog2Layout.setHorizontalGroup(
+            jDialog2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jFileChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+        jDialog2Layout.setVerticalGroup(
+            jDialog2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jFileChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("MC-MTS Installer");
         setBounds(new java.awt.Rectangle(0, 0, 488, 345));
@@ -177,13 +202,13 @@ public class Main extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jProgressBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 468, Short.MAX_VALUE)
+            .addComponent(jProgressBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
                     .addComponent(jLabel4))
                 .addGap(0, 0, Short.MAX_VALUE))
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 468, Short.MAX_VALUE)
+            .addComponent(jScrollPane1)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -194,11 +219,11 @@ public class Main extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 124, Short.MAX_VALUE))
         );
 
         jLabel10.setForeground(new java.awt.Color(153, 153, 153));
-        jLabel10.setText("Version 1.0-SNAPSHOT");
+        jLabel10.setText("Version 1.0-BETA");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -206,19 +231,16 @@ public class Main extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 468, Short.MAX_VALUE)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jLabel10)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1)))
-                .addContainerGap())
+                        .addComponent(jButton1))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 468, Short.MAX_VALUE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -230,12 +252,12 @@ public class Main extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jLabel10))
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -256,9 +278,8 @@ public class Main extends javax.swing.JFrame {
         try {
             JSONParser parser = new JSONParser();
 
-            log("Reading settings.json");
-            Integer prevValue = jProgressBar1.getValue();
-            jProgressBar1.setValue(prevValue + 10);
+            log("Reading settings");
+            addProgress(10);
             
             InputStream settingsFile = getClass().getResourceAsStream("/settings.json");
             String settingsString = convertStreamToString(settingsFile);
@@ -278,14 +299,125 @@ public class Main extends javax.swing.JFrame {
                 log("Server type: " + settings.get("type"));
                 log("Server version: " + settings.get("version"));
                 if(settings.containsKey("plugins")) {
-                    //TODO: List plugin IDs (+ name from CurseForge API)
-                    log("This server has some plugins: TODO :D");
+                    //TODO: List plugin IDs (+ optionally name from CurseForge API)
+                    log("This server has some plugins: this is TODO");
                 }
 
                 /*
-                Download the start file
+                Open dialog to choose location
                 */
-                log("Downloading start file");
+                log("Asking for install location");
+                addProgress(10);
+                jFileChooser1.setCurrentDirectory(new java.io.File("."));
+                jFileChooser1.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                jFileChooser1.setAcceptAllFileFilterUsed(false);
+                if(jFileChooser1.showOpenDialog(jDialog2) == JFileChooser.APPROVE_OPTION) {
+                    /*
+                    Log installation directory
+                    */
+                    log("Install dir: " + jFileChooser1.getCurrentDirectory());
+                    
+                    /*
+                    Download start file
+                    */
+                    addProgress(10);
+                    log("Downloading start file");
+                    try {
+                        URL url = new URL(Main.FILES_HOST + "/start." + settings.get("startExtention"));
+                        String dir = jFileChooser1.getCurrentDirectory() + "";
+                        String file = "start." + settings.get("startExtention");
+                        
+                        if(downloadFile(url, dir, file)) {
+                            /*
+                            Success! Downloaded start file
+                            */
+                            log("Downloaded start file");
+                            
+                            /*
+                            Download server.jar (server binary)
+                            The file is zip-compressed, so extract it after downloading
+                            */
+                            addProgress(10);
+                            log("Downloading server binary");
+                            try {
+                                url = new URL(Main.FILES_HOST + "/servers/"
+                                        + settings.get("type") + "/"
+                                        + settings.get("version") + "/server.zip");
+                                file = "server.zip";
+                                
+                                if(downloadFile(url, dir, file)) {
+                                    log("Downloaded server binary");
+                                    addProgress(10);
+                                    log("Extracting server binary");
+                                    if(unZipIt(new File(dir, file).toString(), dir)) {
+                                        log("Server binary has been extracted");
+                                        if(settings.get("type") == "spigotmc"
+                                                || settings.get("type") == "craftbukkit") {
+                                            /*
+                                            Download plugins
+                                            */
+                                            log("Downloading plugins");
+                                            addProgress(10);
+                                            done();
+                                        } else {
+                                            log("Done! Trying to delete compressed server binary");
+                                            done();
+                                            (new File(dir, file)).delete();
+                                        }
+                                    } else {
+                                        /*
+                                        Finish with error
+                                        */
+                                        done(true);
+                                        log("------------------------------------------");
+                                        log("-- Server binary couldn't be downloaded --");
+                                        log("------------------------------------------");
+                                    }
+                                } else {
+                                    /*
+                                    Finish with error
+                                    */
+                                    done(true);
+                                    log("------------------------------------------");
+                                    log("-- Server binary couldn't be downloaded --");
+                                    log("------------------------------------------");
+                                }
+                            } catch(MalformedURLException e) {
+                                /*
+                                Finish with error
+                                */
+                                done(true);
+                                log("----------------------------------------");
+                                log("-- URL for server binary is incorrect --");
+                                log("----------------------------------------");
+                            }
+                        } else {
+                            /*
+                            Finish with error
+                            */
+                            done(true);
+                            log("---------------------------------------");
+                            log("-- Start file couldn't be downloaded --");
+                            log("---------------------------------------");
+                        }
+                    } catch(MalformedURLException e) {
+                        /*
+                        Finish with error
+                        */
+                        done(true);
+                        log("-------------------------------------");
+                        log("-- URL for start file is incorrect --");
+                        log("-------------------------------------");
+                    }
+                } else {
+                    /*
+                    Finish (With actually an error) :D
+                    */
+                    done(true);
+                    log("-------------------------");
+                    log("-- Make any selection! --");
+                    log("-------------------------");
+                }
             } else {
                 log("This installer is not set up yet. Go to "
                         + "http://jochembroekhoff.nl/mc-mts to set up an installer.");
@@ -297,7 +429,6 @@ public class Main extends javax.swing.JFrame {
             }
         } catch(ParseException e) {
             done(true);
-            
             log("----------------------------------");
             log("-- Couldn't parse settings.json --");
             log("----------------------------------");
@@ -352,8 +483,9 @@ public class Main extends javax.swing.JFrame {
     
     private void done(Boolean zeroPercent) {
         if(zeroPercent) { //Is this an error?
-            jProgressBar1.setValue(0);
-            jButton1.setEnabled(true);
+            jTextArea1.setText(null); //Clear log
+            jProgressBar1.setValue(0); //Reset progress bar
+            jButton1.setEnabled(true); //Enable "start" button
         } else {
             done();
         }
@@ -379,11 +511,82 @@ public class Main extends javax.swing.JFrame {
         
         return jProgressBar1;
     }
+    
+    private boolean downloadFile(URL url, String dir, String fileName) {
+        try {
+            URLConnection urlConn = url.openConnection();
+            BufferedInputStream is = new BufferedInputStream(urlConn.getInputStream());
+            File out = new File(dir, fileName);
+            BufferedOutputStream bout = new BufferedOutputStream(new FileOutputStream(out));
+            
+            byte[] b = new byte[8 * 1024];
+            int read = 0;
+            
+            while((read = is.read(b)) > -1) {
+                bout.write(b, 0, read);
+            }
+            
+            bout.flush();
+            bout.close();
+            is.close();
+            
+            return true;
+        } catch(IOException e) {
+            return false;
+        }
+    }
+    
+    public boolean unZipIt(String zipFile, String outputFolder){
+ 
+        byte[] buffer = new byte[1024];
+
+        try{
+            /*
+            create output directory is not exists
+            */
+            File folder = new File(outputFolder);
+            if(!folder.exists()){
+                    folder.mkdir();
+            }
+
+            //get the zip file content
+            ZipInputStream zis = new ZipInputStream(new FileInputStream(zipFile));
+            //get the zipped file list entry
+            ZipEntry ze = zis.getNextEntry();
+
+            while(ze!=null){
+
+                String fileName = ze.getName();
+                File newFile = new File(outputFolder + File.separator + fileName);
+
+                //create all non exists folders
+                //else you will hit FileNotFoundException for compressed folder
+                new File(newFile.getParent()).mkdirs();
+
+                FileOutputStream fos = new FileOutputStream(newFile);             
+
+                int len;
+                while ((len = zis.read(buffer)) > 0) {
+                    fos.write(buffer, 0, len);
+                }
+                fos.close();   
+                ze = zis.getNextEntry();
+            }
+            zis.closeEntry();
+            zis.close();
+
+            return true;
+        }catch(IOException ex){
+          return false;
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JDialog jDialog1;
+    private javax.swing.JDialog jDialog2;
+    private javax.swing.JFileChooser jFileChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
@@ -401,4 +604,5 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTextArea jTextArea1;
     // End of variables declaration//GEN-END:variables
+    private static final String FILES_HOST = "http://jochembroekhoff.nl/mc-mts/files";
 }
