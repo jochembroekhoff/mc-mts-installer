@@ -17,7 +17,6 @@ import javax.swing.JProgressBar;
 import javax.swing.JTextArea;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 /**
  * Main class for the MC-MTS Installer
@@ -427,7 +426,7 @@ public class Main extends javax.swing.JFrame {
                 */
                 done(true);
             }
-        } catch(ParseException e) {
+        } catch(Exception e) {
             done(true);
             log("----------------------------------");
             log("-- Couldn't parse settings.json --");
